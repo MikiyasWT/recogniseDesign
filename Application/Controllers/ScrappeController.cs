@@ -31,9 +31,9 @@ namespace RecogniseDesign.Controllers
     }
 
     [HttpGet]
-    public IActionResult ScrapeWebsite()
+    public IActionResult ScrapeWebsite([FromQuery] int pageCount = 1)
     {
-        var response = _webScraper.ScrapeWebsite("https://www.ebay.com/sch/i.html?_from=R40&_nkw=microwave&_sacat=0&_pgn=1");
+        var response = _webScraper.ScrapeWebsite("https://www.ebay.com/sch/i.html?_from=R40&_nkw=microwave&_sacat=0", pageCount);
         return Ok(response);
     }
   }
