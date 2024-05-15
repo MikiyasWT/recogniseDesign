@@ -74,7 +74,55 @@ namespace RecogniseDesign.Controllers
             
        return Ok(productsToReturn);
 
-    }    
+    } 
+
+
+    [HttpPost]
+    public async Task<IActionResult> AddProduct([FromBody] ScrappedDataForCreationDto product)
+    {
+        if(product == null)
+        {
+            _logger.LogError($"there was no product that was sent");
+            return BadRequest($"there was no product that was sent");
+        }
+        if(!ModelState.IsValid)
+        {
+                _logger.LogError($"invalid model state for adding product");
+                return UnprocessableEntity(ModelState);
+        }
+          var productEntity = _mapper.Map<ScrappedData>(product);
+          _repository.ScrappedData.AddProduct(productEntity);
+
+          await _repository.SaveAsync();
+
+           var productReturned = _mapper.Map<ScrappedProductReadDto>(productEntity);
+           return Ok(productReturned);
+    }
+
+
+        [HttpGet("{productId}", Name = "ProductById")]
+        public async Task<IActionResult> GetProduct([FromQuery] Guid productId)
+        {
+
+            // Debug.Write(productId);
+            return Ok(productId);
+            
+            // if(productId == null)
+            // {
+            // _logger.LogError($"there was no product id provided");
+            // return BadRequest($"there was no product id provided");
+            // }
+
+
+            // var productFromDb = await _repository.ScrappedData.GetProductAsync(productId,trackChanges:false);
+            // if (productFromDb == null)
+            // {
+            //     _logger.LogInfo($"product with id: {productId} doesn't exist in the database.");
+            //     return NotFound();
+            // }
+            // var scrappedDataDto = _mapper.Map<ScrappedDataDto>(productFromDb);
+            // return Ok(scrappedDataDto);
+        }   
 
   }
 }

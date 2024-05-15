@@ -30,6 +30,9 @@ namespace Repository
             .ToListAsync();
         }            
 
+        public async Task<ScrappedData> GetProductAsync(Guid productId, bool trackChanges) =>
+                await FindByCondition(c => c.Id.Equals(productId), trackChanges)
+                     .SingleOrDefaultAsync();
 
         // public async Task<IEnumerable<ScrappedData>>  GetEmployeesAsync(Guid companyId, bool trackChanges) =>
         //     await FindByCondition(c => c.CompanyId.Equals(companyId), trackChanges)
@@ -55,10 +58,7 @@ namespace Repository
 
         
 
-        public Task<ScrappedData> GetEmployeeAsync(Guid productId, bool trackChanges)
-        {
-            throw new NotImplementedException();
-        }
+
 
 
 
