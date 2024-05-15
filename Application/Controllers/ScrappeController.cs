@@ -37,16 +37,12 @@ namespace RecogniseDesign.Controllers
     [HttpGet]
     public async Task<IActionResult> ScrapeWebsite([FromQuery] int pageCount = 1)
     {
-
-
         var scrapedData = _webScraper.ScrapeWebsite("https://www.ebay.com/sch/i.html?_from=R40&_nkw=microwave&_sacat=0", pageCount);
             if ( scrapedData == null)
             {
                 _logger.LogError("the scaraped data is empty");
                 return BadRequest("the scaraped data is empty");
             }
-
-            // return Ok(scrapedData);
 
             var scrapedProducts = _mapper.Map<IEnumerable<ScrappedData>>(scrapedData);
 
@@ -60,6 +56,24 @@ namespace RecogniseDesign.Controllers
             await _repository.SaveAsync();
 
             return Ok();
+    }
+
+
+    [HttpGet("products")]
+    public async Task<IActionResult> GetProductsFromDb()
+    {
+
+       var items = await _repository.ScrappedData.GetScrappedDataAsync(trackChanges:false);
+       if(items == null)
+       {
+        _logger.LogInfo($"there is no product scrapped in your database");
+        return NotFound();
+       }
+
+       var productsToReturn = _mapper.Map<IEnumerable<ScrappedProductReadDto>>(items);
+            
+       return Ok(productsToReturn);
+
     }    
 
   }

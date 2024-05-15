@@ -12,7 +12,7 @@ namespace Application.Profiles
             //for creation
             CreateMap<ScrappedDataForCreationDto, ScrappedData>();
             CreateMap<Product, ScrappedData>();
-
+            CreateMap<ScrappedData, ScrappedProductReadDto>();
             
 
         }
