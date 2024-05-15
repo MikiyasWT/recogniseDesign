@@ -16,7 +16,7 @@ namespace Entities
         //     modelBuilder.ApplyConfiguration(new CompanyConfiguration());
         //     modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
         // }
-        public ISet<ScrappedData> ScrappedData { get; set; }
+        public DbSet<ScrappedData> ScrappedData { get; set; }
 
     }
 }

@@ -9,6 +9,8 @@ namespace Contracts
       void AddProduct(ScrappedData scrappedData);
       void DeleteProduct(ScrappedData scrappedData);
 
+      Task<IEnumerable<ScrappedData>> GetScrapedDataByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
+
     //   void CreateEmployee(Guid companyId, Employee employee);
 
     //   void DeleteEmployee(Employee employee);

@@ -12,11 +12,23 @@ namespace Repository
         {
         }
 
+        public void AddProduct(ScrappedData scrappedData)
+        {
+            
+             Create(scrappedData);
+        }
+
         public async Task<IEnumerable<ScrappedData>> GetScrappedDataAsync(bool trackChanges) =>
         
            await FindAll(trackChanges)
                     .OrderBy(e => e.Title)
                     .ToListAsync();
+
+        public async Task<IEnumerable<ScrappedData>>  GetScrapedDataByIdsAsync(IEnumerable<Guid> ids, bool trackChanges)
+        {
+            return await FindByCondition(x => ids.Contains(x.Id), trackChanges)
+            .ToListAsync();
+        }            
 
 
         // public async Task<IEnumerable<ScrappedData>>  GetEmployeesAsync(Guid companyId, bool trackChanges) =>
@@ -48,14 +60,13 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public void AddProduct(ScrappedData scrappedData)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public void DeleteProduct(ScrappedData scrappedData)
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

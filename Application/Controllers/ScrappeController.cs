@@ -1,8 +1,11 @@
+using Application.ModelBinders;
 using AutoMapper;
 using Contracts;
 using Entities.Dto;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics;
 using System.Linq;
 using WebScrapperLibrary;
 
@@ -30,12 +33,35 @@ namespace RecogniseDesign.Controllers
             _webScraper = webScraper;
     }
 
+
     [HttpGet]
-    public IActionResult ScrapeWebsite([FromQuery] int pageCount = 1)
+    public async Task<IActionResult> ScrapeWebsite([FromQuery] int pageCount = 1)
     {
-        var response = _webScraper.ScrapeWebsite("https://www.ebay.com/sch/i.html?_from=R40&_nkw=microwave&_sacat=0", pageCount);
-        return Ok(response);
-    }
+
+
+        var scrapedData = _webScraper.ScrapeWebsite("https://www.ebay.com/sch/i.html?_from=R40&_nkw=microwave&_sacat=0", pageCount);
+            if ( scrapedData == null)
+            {
+                _logger.LogError("the scaraped data is empty");
+                return BadRequest("the scaraped data is empty");
+            }
+
+            // return Ok(scrapedData);
+
+            var scrapedProducts = _mapper.Map<IEnumerable<ScrappedData>>(scrapedData);
+
+            foreach (var product in scrapedProducts)
+            {
+                // Console.Write("inside loop");
+                _repository.ScrappedData.AddProduct(product);
+                Debug.WriteLine(product);
+            }
+
+            await _repository.SaveAsync();
+
+            return Ok();
+    }    
+
   }
 }
 
