@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc;
+using WebScrapperLibrary;
 // using CompanyEmployees.ActionFilters;
 
 
@@ -25,6 +26,7 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.AddAutoMapper(typeof(Program));
 // builder.Services.AddScoped<ValidationFilterAttribute>();
 // builder.Services.AddScoped<ValidateCompanyExistsAttribute>();
+builder.Services.AddScoped<WebScraper>();
 
 builder.Services.Configure<ApiBehaviorOptions>(options => {
     options.SuppressModelStateInvalidFilter = true;

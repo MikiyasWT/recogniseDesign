@@ -4,6 +4,7 @@
     <ProjectReference Include="..\Entities\Entities.csproj" />
     <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
+    <ProjectReference Include="..\WebScraperLibrary\WebScraperLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

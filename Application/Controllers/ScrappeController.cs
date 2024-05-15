@@ -4,6 +4,8 @@ using Entities.Dto;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using WebScrapperLibrary;
+
 
 namespace RecogniseDesign.Controllers
 {
@@ -19,11 +21,20 @@ namespace RecogniseDesign.Controllers
     private readonly ILoggerManager _logger;
 
     private readonly IMapper _mapper;  
-    public ScrappeController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+    private readonly WebScraper _webScraper;
+    public ScrappeController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, WebScraper webScraper)
     {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _webScraper = webScraper;
+    }
+
+    [HttpGet]
+    public IActionResult ScrapeWebsite()
+    {
+        var response = _webScraper.ScrapeWebsite("https://www.ebay.com/sch/i.html?_from=R40&_nkw=microwave&_sacat=0&_pgn=1");
+        return Ok(response);
     }
   }
 }
