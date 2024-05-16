@@ -6,6 +6,8 @@ using NLog;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc;
 using WebScrapperLibrary;
+using RecogniseDesign.ActionFilters;
+using RecogniseDesign.Utility;
 // using CompanyEmployees.ActionFilters;
 
 
@@ -24,8 +26,8 @@ builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureSqlContext(configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.AddAutoMapper(typeof(Program));
-// builder.Services.AddScoped<ValidationFilterAttribute>();
-// builder.Services.AddScoped<ValidateCompanyExistsAttribute>();
+builder.Services.AddScoped<ValidationFilterAttribute>();
+
 builder.Services.AddScoped<WebScraper>();
 
 builder.Services.Configure<ApiBehaviorOptions>(options => {
@@ -33,6 +35,13 @@ builder.Services.Configure<ApiBehaviorOptions>(options => {
 });
 //validation action filter
 builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
+
+//configuring identity
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJWT(configuration);
+
+builder.Services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
 // for content negotiation between json and XML
 builder.Services.AddControllers( config => 
@@ -74,7 +83,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 
 app.UseRouting();
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();

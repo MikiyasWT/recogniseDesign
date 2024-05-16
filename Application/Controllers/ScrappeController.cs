@@ -3,6 +3,7 @@ using AutoMapper;
 using Contracts;
 using Entities.Dto;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
@@ -17,6 +18,7 @@ namespace RecogniseDesign.Controllers
 
     [Route("api/scrapper")]
     [ApiController]
+    [Authorize]
     public class ScrappeController : ControllerBase
     {
 

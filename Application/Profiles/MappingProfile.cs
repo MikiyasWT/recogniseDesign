@@ -15,6 +15,7 @@ namespace Application.Profiles
             CreateMap<ScrappedData, ScrappedProductReadDto>();
             CreateMap<ScrappedData, ScrappedDataForCreationDto>();
             CreateMap<ScrappedProductReadDto, ScrappedData>();
+            CreateMap<UserForRegistrationDto, User>();
 
         }
     }
