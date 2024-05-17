@@ -36,37 +36,9 @@ namespace Repository
                      .SingleOrDefaultAsync();
         }
 
-        // public async Task<IEnumerable<ScrappedData>>  GetEmployeesAsync(Guid companyId, bool trackChanges) =>
-        //     await FindByCondition(c => c.CompanyId.Equals(companyId), trackChanges)
-        //            .OrderBy(e => e.Name)
-        //            .ToListAsync();
-
-
-        // public async Task<Employee>  GetEmployeeAsync(Guid companyId, Guid employeeId, bool trackChanges) =>
-        //     await FindByCondition(c => c.CompanyId.Equals(companyId) && c.Id.Equals(employeeId), trackChanges)
-        //           .SingleOrDefaultAsync();
-
-        // public void CreateEmployee(Guid companyId, Employee employee){
-        //     employee.CompanyId = companyId;
-        //     Create(employee);
-        // }
-
-        // public void DeleteEmployee(Employee employee)
-        // {
-        //     Delete(employee);
-        // }
-
-
-
-
-
-
-
-
-
         public void DeleteProduct(ScrappedData scrappedData)
         {
-            throw new NotImplementedException();
+            Delete(scrappedData);
         }
 
 

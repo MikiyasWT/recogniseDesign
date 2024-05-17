@@ -127,26 +127,43 @@ namespace RecogniseDesign.Controllers
         [HttpPut("{productId}")]
         public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody] ScrappedProductForUpdateDto product)
         {
-            if(product == null)
+            if (product == null)
             {
                 _logger.LogError("ProductForUpdateDto object sent from client is null.");
                 return BadRequest("ProductForUpdateDto object is null");
             }
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _logger.LogError("Invalid model state for the ProductForUpdateDto object");
                 return UnprocessableEntity(ModelState);
             }
 
-            var productEntity = await _repository.ScrappedData.GetProductAsync(productId, trackChanges:true);
-            if(productEntity == null)
+            var productEntity = await _repository.ScrappedData.GetProductAsync(productId, trackChanges: true);
+            if (productEntity == null)
             {
                 _logger.LogInfo($"Prdouct with id: {productId} doesn't exist in the database.");
                 return NotFound();
             }
 
             _mapper.Map(product, productEntity);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
+
+
+        [HttpDelete("{productId}")]
+        public async Task<IActionResult> DeleteProduct(Guid productId)
+        {
+            var product = await _repository.ScrappedData.GetProductAsync(productId, trackChanges: false);
+            if (product == null)
+            {
+                _logger.LogInfo($"Product with id: {productId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            _repository.ScrappedData.DeleteProduct(product);
             await _repository.SaveAsync();
 
             return NoContent();

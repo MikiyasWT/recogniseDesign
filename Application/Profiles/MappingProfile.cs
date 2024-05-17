@@ -18,7 +18,7 @@ namespace Application.Profiles
             
             CreateMap<ScrappedProductForUpdateDto, ScrappedData>();
 
-             CreateMap<ScrappedProductReadDto, ScrappedData>().ReverseMap();
+            CreateMap<ScrappedProductReadDto, ScrappedData>().ReverseMap();
             CreateMap<UserForRegistrationDto, User>();
 
         }
