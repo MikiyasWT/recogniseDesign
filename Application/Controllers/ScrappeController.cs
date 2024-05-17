@@ -18,7 +18,7 @@ namespace RecogniseDesign.Controllers
 
     [Route("api/scrapper")]
     [ApiController]
-    [Authorize]
+    
     public class ScrappeController : ControllerBase
     {
 
@@ -102,29 +102,25 @@ namespace RecogniseDesign.Controllers
     }
 
 
-        [HttpGet("{productId}", Name = "ProductById")]
-        public async Task<IActionResult> GetProduct([FromQuery] Guid productId)
-        {
+[HttpGet("{productId}", Name = "ProductById")]
+public async Task<IActionResult> GetProduct(Guid productId)
+{
+    if (productId == Guid.Empty)
+    {
+        _logger.LogError($"there was no product id provided");
+        return BadRequest($"there was no product id provided");
+    }
 
-            // Debug.Write(productId);
-            return Ok(productId);
-            
-            // if(productId == null)
-            // {
-            // _logger.LogError($"there was no product id provided");
-            // return BadRequest($"there was no product id provided");
-            // }
+    var productFromDb = await _repository.ScrappedData.GetProductAsync(productId, trackChanges: false);
+    if (productFromDb == null)
+    {
+        _logger.LogInfo($"product with id: {productId} doesn't exist in the database.");
+        return NotFound();
+    }
 
-
-            // var productFromDb = await _repository.ScrappedData.GetProductAsync(productId,trackChanges:false);
-            // if (productFromDb == null)
-            // {
-            //     _logger.LogInfo($"product with id: {productId} doesn't exist in the database.");
-            //     return NotFound();
-            // }
-            // var scrappedDataDto = _mapper.Map<ScrappedDataDto>(productFromDb);
-            // return Ok(scrappedDataDto);
-        }   
+    var scrappedDataDto = _mapper.Map<ScrappedProductReadDto>(productFromDb);
+    return Ok(scrappedDataDto);
+}
 
   }
 }

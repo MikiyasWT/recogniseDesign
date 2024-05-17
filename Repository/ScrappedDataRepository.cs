@@ -28,11 +28,13 @@ namespace Repository
         {
             return await FindByCondition(x => ids.Contains(x.Id), trackChanges)
             .ToListAsync();
-        }            
+        }
 
-        public async Task<ScrappedData> GetProductAsync(Guid productId, bool trackChanges) =>
-                await FindByCondition(c => c.Id.Equals(productId), trackChanges)
+        public async Task<ScrappedData> GetProductAsync(Guid productId, bool trackChanges)
+        {
+            return await FindByCondition(c => c.Id.Equals(productId), trackChanges)
                      .SingleOrDefaultAsync();
+        }
 
         // public async Task<IEnumerable<ScrappedData>>  GetEmployeesAsync(Guid companyId, bool trackChanges) =>
         //     await FindByCondition(c => c.CompanyId.Equals(companyId), trackChanges)
@@ -56,7 +58,7 @@ namespace Repository
 
 
 
-        
+
 
 
 
