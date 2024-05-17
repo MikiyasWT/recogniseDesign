@@ -1,5 +1,5 @@
 using Application.CustomMiddleware;
-using CompanyEmployees.Extensions;
+using Application.Extensions;
 using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;

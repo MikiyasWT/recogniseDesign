@@ -30,7 +30,7 @@ namespace RecogniseDesign.Utility
         {
             _user = await _userManager.FindByNameAsync(userForAuth.UserName);
 
-            return (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
+            return _user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password);
         }
 
         public async Task<string> CreateToken()
@@ -44,7 +44,8 @@ namespace RecogniseDesign.Utility
 
         private SigningCredentials GetSigningCredentials()
         {
-            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
+            
+            var key = Encoding.UTF8.GetBytes(Environment.ExpandEnvironmentVariables("%SECRET%"));
             var secret = new SymmetricSecurityKey(key);
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);

@@ -1,17 +1,39 @@
 
-using System.Text;
+// using System.Text;
+// using Application;
+// using Contracts;
+// using Entities;
+// using Entities.Models;
+// using LoggerService;
+// using Microsoft.AspNetCore.Authentication.JwtBearer;
+// using Microsoft.AspNetCore.Identity;
+// using Microsoft.EntityFrameworkCore;
+// using Microsoft.IdentityModel.Tokens;
+// using Repository;
+
+
+
+
 using Application;
 using Contracts;
 using Entities;
 using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Repository;
-
-namespace CompanyEmployees.Extensions
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+namespace Application.Extensions
 {
     public static class ServiceExtensions
     {
@@ -79,8 +101,15 @@ namespace CompanyEmployees.Extensions
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
-            string SecretKey = configuration["JwtSettings:SecretKey"];
             //var secretKey = Environment.GetEnvironmentVariable("SECRET");
+            var secretKey = Environment.ExpandEnvironmentVariables("%SECRET%");
+
+            Console.Write(secretKey);
+            if (string.IsNullOrEmpty(secretKey))
+    {
+        throw new ArgumentException("The JWT secret must be provided.");
+    }
+
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -94,10 +123,10 @@ namespace CompanyEmployees.Extensions
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
+
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
-                    IssuerSigningKey = new
-    SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 };
             });
         }
