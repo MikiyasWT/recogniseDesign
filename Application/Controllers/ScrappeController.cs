@@ -36,7 +36,7 @@ namespace RecogniseDesign.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Manager")]
         public async Task<IActionResult> ScrapeWebsite([FromQuery] int pageCount = 1)
         {
             var scrapedData = _webScraper.ScrapeWebsite("https://www.ebay.com/sch/i.html?_from=R40&_nkw=microwave&_sacat=0", pageCount);
@@ -79,7 +79,7 @@ namespace RecogniseDesign.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Manager")]
         public async Task<IActionResult> AddProduct([FromBody] ScrappedDataForCreationDto product)
         {
             if (product == null)
@@ -125,6 +125,7 @@ namespace RecogniseDesign.Controllers
 
 
         [HttpPut("{productId}")]
+        [Authorize(Policy = "ManagerPolicy, AdministratorPolicy")]
         public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody] ScrappedProductForUpdateDto product)
         {
             if (product == null)
@@ -153,7 +154,7 @@ namespace RecogniseDesign.Controllers
         }
 
 
-        [HttpDelete("{productId}")]
+        [HttpDelete("{productId}"), Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteProduct(Guid productId)
         {
             var product = await _repository.ScrappedData.GetProductAsync(productId, trackChanges: false);
