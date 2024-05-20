@@ -36,6 +36,7 @@ namespace RecogniseDesign.Controllers
         }
 
 
+
         [HttpGet, Authorize(Roles = "Manager")]
         public async Task<IActionResult> ScrapeWebsite([FromQuery] int pageCount = 1)
         {
@@ -79,6 +80,7 @@ namespace RecogniseDesign.Controllers
         }
 
 
+        [HttpPost]
         [HttpPost, Authorize(Roles = "Manager")]
         public async Task<IActionResult> AddProduct([FromBody] ScrappedDataForCreationDto product)
         {
@@ -124,8 +126,8 @@ namespace RecogniseDesign.Controllers
 
 
 
-        [HttpPut("{productId}")]
-        [Authorize(Policy = "ManagerPolicy, AdministratorPolicy")]
+        [HttpPut("{productId}"),  Authorize(Roles = "Manager")]
+        
         public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody] ScrappedProductForUpdateDto product)
         {
             if (product == null)
@@ -152,6 +154,7 @@ namespace RecogniseDesign.Controllers
 
             return NoContent();
         }
+
 
 
         [HttpDelete("{productId}"), Authorize(Roles = "Manager")]

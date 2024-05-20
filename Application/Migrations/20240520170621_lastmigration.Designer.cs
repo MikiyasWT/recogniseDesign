@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Application.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20240520170621_lastmigration")]
+    partial class lastmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,19 +157,19 @@ namespace Application.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7e55a607-1556-4f16-8961-d7eb3906c4e6",
+                            Id = "9c0e647a-8aeb-4c68-b2cc-fdbfcb2526ea",
                             Name = "Guest",
                             NormalizedName = "GUEST"
                         },
                         new
                         {
-                            Id = "c6d3f319-fd21-4d8c-8208-271e2c32045d",
+                            Id = "3237d1af-7f4b-4b48-a673-5e475a9ea9aa",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "37ecebcb-8c0e-4840-9b34-d9cbf314506b",
+                            Id = "e62abe24-6c64-4582-8ac8-30bef0d2bea9",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
