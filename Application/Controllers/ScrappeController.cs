@@ -37,7 +37,8 @@ namespace RecogniseDesign.Controllers
 
 
 
-        [HttpGet, Authorize(Roles = "Manager")]
+        [HttpGet, Authorize(Roles = "Administrator")]
+        
         public async Task<IActionResult> ScrapeWebsite([FromQuery] int pageCount = 1)
         {
             var scrapedData = _webScraper.ScrapeWebsite("https://www.ebay.com/sch/i.html?_from=R40&_nkw=microwave&_sacat=0", pageCount);
@@ -62,7 +63,7 @@ namespace RecogniseDesign.Controllers
         }
 
 
-        [HttpGet("products")]
+        [HttpGet("products") , Authorize(Roles = "Manager, Administrator, Guest")]
         public async Task<IActionResult> GetProductsFromDb()
         {
 
@@ -78,10 +79,8 @@ namespace RecogniseDesign.Controllers
             return Ok(productsToReturn);
 
         }
-
-
-        [HttpPost]
-        [HttpPost, Authorize(Roles = "Manager")]
+        
+        [HttpPost, Authorize(Roles = "Administrator, Manager")]
         public async Task<IActionResult> AddProduct([FromBody] ScrappedDataForCreationDto product)
         {
             if (product == null)
@@ -104,7 +103,7 @@ namespace RecogniseDesign.Controllers
         }
 
 
-        [HttpGet("{productId}", Name = "ProductById")]
+        [HttpGet("{productId}", Name = "ProductById"), Authorize(Roles = "Manager, Administrator, Guest")]
         public async Task<IActionResult> GetProduct(Guid productId)
         {
             if (productId == Guid.Empty)
@@ -126,7 +125,7 @@ namespace RecogniseDesign.Controllers
 
 
 
-        [HttpPut("{productId}"),  Authorize(Roles = "Manager")]
+        [HttpPut("{productId}"),  Authorize(Roles = "Manager, Administrator")]
         
         public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody] ScrappedProductForUpdateDto product)
         {
@@ -157,7 +156,7 @@ namespace RecogniseDesign.Controllers
 
 
 
-        [HttpDelete("{productId}"), Authorize(Roles = "Manager")]
+        [HttpDelete("{productId}"), Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteProduct(Guid productId)
         {
             var product = await _repository.ScrappedData.GetProductAsync(productId, trackChanges: false);

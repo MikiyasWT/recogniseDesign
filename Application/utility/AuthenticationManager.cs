@@ -55,13 +55,14 @@ namespace RecogniseDesign.Utility
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, _user.UserName)
+                
+                new Claim("username", _user.UserName)
             };
 
             var roles = await _userManager.GetRolesAsync(_user);
             foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                claims.Add(new Claim("roles", role));
             }
 
             return claims;
